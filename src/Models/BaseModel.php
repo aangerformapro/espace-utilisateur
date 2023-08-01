@@ -28,6 +28,10 @@ abstract class BaseModel
 
         $pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
 
+        static::createTable($pdo);
+
         return $pdo;
     }
+
+    abstract protected static function createTable(\PDO $pdo);
 }
