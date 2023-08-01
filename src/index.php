@@ -4,11 +4,16 @@ declare(strict_types=1);
 
 require_once dirname(__DIR__) . '/vendor/autoload.php';
 
-session_start();
-
-if ( ! isset($_SESSION['USER']))
+if (null === ($user = getUser()))
 {
     header('Location: ./login.php');
 
     exit;
 }
+
+echo loadView('index', [
+
+    'pagetitle' => 'Hello',
+    'user'      => $user,
+
+]);

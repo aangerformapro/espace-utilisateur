@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mes Tâches</title>
+    <title>Espace Utilisateur<?= isset($pagetitle) ? (' - ' . $pagetitle) : ''; ?></title>
     <meta name="robots" content="index,follow">
-    <meta name="description" content="My todo list">
+    <meta name="description" content="Espace Utilisateur">
     <meta name="author" content="Americ Anger">
-    <meta name="keywords" content="todo, list">
+    <meta name="keywords" content="login">
     <link rel="shortcut icon" href="./assets/pictures/favicon.png" sizes="32x32" type="image/png">
     <link rel="apple-touch-icon" href="./assets/pictures/favicon.png" sizes="32x32" type="image/png">
 

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Models;
 
-class User
+class User extends BaseModel implements \JsonSerializable, \Stringable
 {
     protected int $id;
 
@@ -23,6 +23,11 @@ class User
         $this->lastname  = $data['lastname'];
         $this->email     = $data['email'];
         $this->username  = $data['username'];
+    }
+
+    public function __toString()
+    {
+        return $this->getName();
     }
 
     public function getId(): int
@@ -52,7 +57,7 @@ class User
 
     public static function connectUser(string $username, string $password): ?self
     {
-        $stmt = GetPdoConnection()->prepare(
+        $stmt = static::getConnection()->prepare(
             'SELECT * FROM USERS WHERE username=?'
         );
 
@@ -74,7 +79,7 @@ class User
     {
         $data['password'] = password_hash($data['password'], PASSWORD_DEFAULT);
 
-        $stmt             = GetPdoConnection()->prepare(
+        $stmt             = static::getConnection()->prepare(
             'INSERT INTO users (username, firstname, lastname, email, password) ' .
             'VALUES(:username, :firstname, :lastname, :email, :password)'
         );
@@ -86,5 +91,21 @@ class User
         {
             return false;
         }
+    }
+
+    public function jsonSerialize()
+    {
+        return [
+            'id'        => $this->id,
+            'username'  => $this->username,
+            'firstname' => $this->firstname,
+            'lastname'  => $this->lastname,
+            'email'     => $this->email,
+        ];
+    }
+
+    public function toArray(): array
+    {
+        return $this->jsonSerialize();
     }
 }
