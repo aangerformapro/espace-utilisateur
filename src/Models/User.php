@@ -58,7 +58,7 @@ class User extends BaseModel implements \JsonSerializable, \Stringable
     public static function connectUser(string $username, string $password): ?self
     {
         $stmt = static::getConnection()->prepare(
-            'SELECT * FROM USERS WHERE username=?'
+            'SELECT * FROM users WHERE username=?'
         );
 
         if ($stmt->execute([$username]))
@@ -73,6 +73,22 @@ class User extends BaseModel implements \JsonSerializable, \Stringable
         }
 
         return null;
+    }
+
+    public function jsonSerialize()
+    {
+        return [
+            'id'        => $this->id,
+            'username'  => $this->username,
+            'firstname' => $this->firstname,
+            'lastname'  => $this->lastname,
+            'email'     => $this->email,
+        ];
+    }
+
+    public function toArray(): array
+    {
+        return $this->jsonSerialize();
     }
 
     public static function createUser(array $data): bool
@@ -93,36 +109,44 @@ class User extends BaseModel implements \JsonSerializable, \Stringable
         }
     }
 
-    public function jsonSerialize()
+    public static function hasUsers(int $id = null): bool
     {
-        return [
-            'id'        => $this->id,
-            'username'  => $this->username,
-            'firstname' => $this->firstname,
-            'lastname'  => $this->lastname,
-            'email'     => $this->email,
-        ];
+        $query = 'SELECT COUNT(id) AS count FROM users';
+
+        if ( ! is_null($id))
+        {
+            $query .= ' WHERE id=:id';
+            $stmt = static::getConnection()->prepare($query);
+            $stmt->bindValue(':id', $id);
+        } else
+        {
+            $stmt = static::getConnection()->prepare($query);
+        }
+
+        $stmt->execute();
+
+        if ($result = $stmt->fetch())
+        {
+            return $result['count'] > 0;
+        }
+
+        return false;
     }
 
-    public function toArray(): array
+    protected static function createTable(\PDO $pdo)
     {
-        return $this->jsonSerialize();
+        $query = 'CREATE TABLE IF NOT EXISTS users (' .
+            'id int(11) NOT NULL AUTO_INCREMENT,' .
+            'username varchar(255) NOT NULL,' .
+            'firstname varchar(255) NOT NULL,' .
+            'lastname varchar(255) NOT NULL,' .
+            'email varchar(255) NOT NULL,' .
+            'password varchar(255) NOT NULL,' .
+            'PRIMARY KEY (id),' .
+            'UNIQUE KEY username (username),' .
+            'UNIQUE KEY email (email)' .
+            ') ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;';
+
+        $pdo->query($query);
     }
-
-  protected static function createTable(\PDO $pdo)
-  {
-      $query = 'CREATE TABLE IF NOT EXISTS users (' .
-          'id int(11) NOT NULL AUTO_INCREMENT,' .
-          'username varchar(255) NOT NULL,' .
-          'firstname varchar(255) NOT NULL,' .
-          'lastname varchar(255) NOT NULL,' .
-          'email varchar(255) NOT NULL,' .
-          'password varchar(255) NOT NULL,' .
-          'PRIMARY KEY (id),' .
-          'UNIQUE KEY username (username),' .
-          'UNIQUE KEY email (email)' .
-        ') ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;';
-
-      $pdo->query($query);
-  }
 }

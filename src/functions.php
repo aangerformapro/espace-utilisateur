@@ -81,31 +81,6 @@ function isExpired(string $date)
     return date_create('now')->getTimestamp() > date_create($date)->getTimestamp();
 }
 
-// function getPdoConnection(): PDO
-// {
-//     static $pdo;
-
-//     if ($pdo)
-//     {
-//         return $pdo;
-//     }
-
-//     $config = require_once __DIR__ . '/config.php';
-
-//     $pdo    = new \PDO(
-//         sprintf(
-//             'mysql:host=localhost;dbname=%s',
-//             $config['db']
-//         ),
-//         $config['user'],
-//         $config['password']
-//     );
-
-//     $pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
-
-//     return $pdo;
-// }
-
 function getUser(): ?User
 {
     static $user;
@@ -117,7 +92,14 @@ function getUser(): ?User
 
     if (isset($_SESSION['USER']))
     {
-        return $user = new User($_SESSION['USER']);
+        $u = new User($_SESSION['USER']);
+
+        if (User::hasUsers($u->getId()))
+        {
+            return $user = $u;
+        }
+
+        unset($_SESSION['USER']);
     }
     return null;
 }

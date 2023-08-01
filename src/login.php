@@ -13,6 +13,13 @@ if (getUser())
     exit;
 }
 
+if ( ! User::hasUsers())
+{
+    header('Location: ./register.php');
+
+    exit;
+}
+
 if ('POST' === getRequestMethod() && 'login' === getPostdata('action'))
 {
     $_SESSION['postdata'] = getPostdata('username', 'password');
