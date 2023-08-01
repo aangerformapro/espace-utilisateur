@@ -138,3 +138,21 @@ function getRequestMethod(): string
 {
     return $_SERVER['REQUEST_METHOD'] ?? 'GET';
 }
+
+function isSecurePassword(string $password)
+{
+    foreach ([
+        '/[\$\&\+\,\:\;\=\?\@\#\|\<\>\.\^\*\(\)\%\!\-]/',
+        '/[A-Z]/', '/[a-z]/', '/\d/',
+
+    ] as $pattern)
+    {
+        if ( ! preg_match($pattern, $password))
+        {
+            var_dump($pattern);
+            return false;
+        }
+    }
+
+    return mb_strlen($password) >= 8;
+}

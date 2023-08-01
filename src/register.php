@@ -54,6 +54,10 @@ if (isset($_SESSION['postdata']))
     {
         $error = true;
         addFlashMessage('Les mots de passe ne correspondent pas.', 'danger');
+    } elseif ( ! isSecurePassword($postdata['password']))
+    {
+        $error = true;
+        addFlashMessage('Votre mot de passe doit contenir au moins un caractère spécial, une majuscule, une minuscule, un chiffre et doit faire au minimum 8 caractère.', 'danger');
     }
 
     unset($postdata['confirm-password']);
