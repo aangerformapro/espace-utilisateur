@@ -13,7 +13,7 @@ if (null === ($user = getUser()))
 
 echo loadView('index', [
 
-    'pagetitle' => 'Hello',
+    'pagetitle' => 'Hello ' . $user,
     'user'      => $user,
 
 ]);
