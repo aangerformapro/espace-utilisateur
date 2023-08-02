@@ -6,6 +6,13 @@ namespace Models;
 
 abstract class BaseModel
 {
+    public static function redirectTo(string $url)
+    {
+        header(sprintf('Location: %s', $url));
+
+        exit;
+    }
+
     protected static function getConnection(): \PDO
     {
         static $pdo;

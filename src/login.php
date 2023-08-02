@@ -8,24 +8,18 @@ require_once dirname(__DIR__) . '/vendor/autoload.php';
 
 if (getUser())
 {
-    header('Location: ./');
-
-    exit;
+    User::redirectTo('./');
 }
 
 if ( ! User::hasUsers())
 {
-    header('Location: ./register.php');
-
-    exit;
+    User::redirectTo('./register.php');
 }
 
 if ('POST' === getRequestMethod() && 'login' === getPostdata('action'))
 {
     $_SESSION['postdata'] = getPostdata('username', 'password');
-    header('Location: ./login.php');
-
-    exit;
+    User::redirectTo('./login.php');
 }
 
 if (isset($_SESSION['postdata']))
@@ -46,9 +40,7 @@ if (isset($_SESSION['postdata']))
         if ($user = User::connectUser($postdata['username'], $postdata['password']))
         {
             $_SESSION['USER'] = $user->toArray();
-            header('Location: ./');
-
-            exit;
+            User::redirectTo('./');
         }
 
         addFlashMessage('Vos identifiants sont incorrects.', 'danger');

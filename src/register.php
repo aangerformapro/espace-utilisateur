@@ -8,9 +8,7 @@ require_once dirname(__DIR__) . '/vendor/autoload.php';
 
 if (getUser())
 {
-    header('Location: ./');
-
-    exit;
+    User::redirectTo('./');
 }
 
 if ('POST' === getRequestMethod() && 'register' === getPostdata('action'))
@@ -24,9 +22,7 @@ if ('POST' === getRequestMethod() && 'register' === getPostdata('action'))
         'confirm-password'
     );
 
-    header('Location: ./register.php');
-
-    exit;
+    User::redirectTo('./register.php');
 }
 
 if (isset($_SESSION['postdata']))
@@ -66,9 +62,7 @@ if (isset($_SESSION['postdata']))
     {
         if (User::createUser($postdata))
         {
-            header('Location: ./login.php');
-
-            exit;
+            User::redirectTo('./login.php');
         }
         addFlashMessage("Un utilisateur existe déjà avec ce nom d'utilisateur / Email.", 'danger');
     }
