@@ -1,1 +1,1 @@
-*,:after,:before{box-sizing:border-box;margin:0;padding:0}html{font-size:16px;line-height:1.2;scroll-behavior:smooth}.login-form-container,.page,body{min-height:100vh}
+*,:after,:before{box-sizing:border-box;margin:0;padding:0}html{font-size:16px;line-height:1.2;scroll-behavior:smooth}.login-form-container,.page,body{min-height:100vh}.login-card{width:100%}@media (min-width:992px){.login-card{width:50%}}

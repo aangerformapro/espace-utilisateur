@@ -6,7 +6,7 @@ include 'page/header.php';
 
 ?>
 <div class="container login-form-container d-flex flex-column justify-content-center align-items-center">
-  <div class="card login-card w-50">
+  <div class="card login-card">
 
     <div class="card-body">
 

@@ -6,7 +6,7 @@ include 'page/header.php';
 
 ?>
 <div class="container login-form-container d-flex flex-column justify-content-center align-items-center">
-  <div class="card login-card w-50">
+  <div class="card login-card">
 
     <div class="card-body">
 
@@ -17,22 +17,22 @@ include 'page/header.php';
 
       <form method="post" action="./register.php">
         <div class="form-floating mb-3">
-          <input type="text" class="form-control" id="username" name="username" placeholder="Username" required>
+          <input type="text" class="form-control" id="username" name="username" placeholder="Username" value="<?= $postdata['username']       ?? ''; ?>" required>
           <label for="username">Nom d'utilisateur</label>
         </div>
 
         <div class="form-floating mb-3">
-          <input type="email" class="form-control" id="email" name="email" placeholder="E-mail" required>
+          <input type="email" class="form-control" id="email" name="email" placeholder="E-mail" value="<?= $postdata['email']                 ?? ''; ?>" required>
           <label for="email">E-mail</label>
         </div>
 
         <div class="form-floating mb-3">
-          <input type="text" class="form-control" id="lastname" name="lastname" placeholder="Nom de famille" required>
+          <input type="text" class="form-control" id="lastname" name="lastname" placeholder="Nom de famille" value="<?= $postdata['lastname'] ?? ''; ?>" required>
           <label for="lastname">Nom de famille</label>
         </div>
 
         <div class="form-floating mb-3">
-          <input type="text" class="form-control" id="firstname" name="firstname" placeholder="Prénom" required>
+          <input type="text" class="form-control" id="firstname" name="firstname" placeholder="Prénom" value="<?= $postdata['firstname']      ?? ''; ?>" required>
           <label for="firstname">Prénom</label>
         </div>
 

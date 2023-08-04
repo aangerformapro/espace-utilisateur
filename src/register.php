@@ -11,6 +11,8 @@ if (getUser())
     User::redirectTo('./');
 }
 
+$postdata = [];
+
 if ('POST' === getRequestMethod() && 'register' === getPostdata('action'))
 {
     $_SESSION['postdata'] = getPostdata(
@@ -27,17 +29,32 @@ if ('POST' === getRequestMethod() && 'register' === getPostdata('action'))
 
 if (isset($_SESSION['postdata']))
 {
-    $hasempty = $error = false;
+    $hasempty = $hasSpaces = $error = false;
     $postdata = $_SESSION['postdata'];
     unset($_SESSION['postdata']);
 
-    foreach ($postdata as $value)
+    foreach ($postdata as $key => $value)
     {
         if (empty($value))
         {
             $hasempty = true;
             break;
         }
+
+        if (preg_match('/\s+/', $value))
+        {
+            if (in_array($key, ['lastname',  'firstname']))
+            {
+                continue;
+            }
+            $hasSpaces = true;
+        }
+    }
+
+    if ($hasSpaces)
+    {
+        $error = true;
+        addFlashMessage('Certains champs contiennent des espaces.', 'danger');
     }
 
     if ($hasempty)
@@ -53,7 +70,7 @@ if (isset($_SESSION['postdata']))
     } elseif ( ! isSecurePassword($postdata['password']))
     {
         $error = true;
-        addFlashMessage('Votre mot de passe doit contenir au moins un caractère spécial, une majuscule, une minuscule, un chiffre et doit faire au minimum 8 caractère.', 'danger');
+        addFlashMessage('Votre mot de passe doit contenir au moins un caractère spécial, une majuscule, une minuscule, un chiffre et doit faire au minimum 8 caractères.', 'danger');
     }
 
     unset($postdata['confirm-password']);
@@ -68,4 +85,4 @@ if (isset($_SESSION['postdata']))
     }
 }
 
-echo loadView('register', ['pagetitle' => 'Créer un compte']);
+echo loadView('register', ['pagetitle' => 'Créer un compte', 'postdata' => $postdata]);

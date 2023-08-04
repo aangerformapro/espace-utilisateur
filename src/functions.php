@@ -142,14 +142,13 @@ function getRequestMethod(): string
 function isSecurePassword(string $password)
 {
     foreach ([
-        '/[\$\&\+\,\:\;\=\?\@\#\|\<\>\.\^\*\(\)\%\!\-]/',
+        '/[\$\&\+\,\:\;\=\?\@\#\|\<\>\.\^\*\(\)\%\!\-\}\{\[\]]/',
         '/[A-Z]/', '/[a-z]/', '/\d/',
 
     ] as $pattern)
     {
         if ( ! preg_match($pattern, $password))
         {
-            var_dump($pattern);
             return false;
         }
     }
